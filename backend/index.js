@@ -4,25 +4,26 @@ const cors = require('cors');
 const app = express();
 const db = require('./database');
 
-// 📡 Rutas importadas
+// 📡 Rutas
 const authRoutes = require('./routes/auth.routes');
 const mascotasRoutes = require('./routes/mascotas.routes');
 const partidaRoutes = require('./routes/partida.routes');
-const fichaRoutes = require('./routes/mascotas.routes'); // Si ya están ahí
+const enfermedadesRoutes = require('./routes/enfermedades.routes');
 
+// ✅ Configuración de CORS
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true
+}));
 
-// 🧱 Middlewares
-app.use(cors());
+// ✅ Middleware para parsear JSON
 app.use(express.json());
 
-// 🛣️ Uso de rutas
+// 🛣️ Rutas
 app.use('/auth', authRoutes);
 app.use('/mascotas', mascotasRoutes);
 app.use('/partida', partidaRoutes);
-app.use('/enfermedades', require('./routes/enfermedades.routes'));
-app.use('/', fichaRoutes);
-
-
+app.use('/enfermedades', enfermedadesRoutes);
 
 // 🔍 Ruta de prueba
 app.post('/prueba', (req, res) => {

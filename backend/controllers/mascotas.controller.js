@@ -160,6 +160,7 @@ const alimentarMascota = async (req, res) => {
     }
 
     const mascota = mascotas[0];
+    console.log('🐾 Mascota antes de acción:', mascota); //
 
     if (mascota.ubicacion !== 'Refugio') {
       return res.status(403).json({ error: 'Solo puedes alimentar a tu mascota cuando estás en el Refugio.' });
@@ -174,7 +175,7 @@ const alimentarMascota = async (req, res) => {
     }
 
     const nuevaHambre = Math.min(mascota.hambre + 20, 100);
-    const nuevaEnergia = mascota.energia - 10;
+    const nuevaEnergia = Math.max(mascota.energia - 10, 0); 
     const nuevaExperiencia = mascota.experiencia + 5;
 
     await db.execute(`UPDATE mascotas SET hambre = ? WHERE id = ?`, [nuevaHambre, mascota_id]);
@@ -187,7 +188,7 @@ const alimentarMascota = async (req, res) => {
       experiencia: nuevaExperiencia
     });
   } catch (error) {
-    console.error('❌ Error al alimentar mascota:', error);
+ console.error(`❌ Error al alimentar la mascota:`, error);
     res.status(500).json({ error: 'Error al alimentar la mascota' });
   }
 };
@@ -198,6 +199,11 @@ const jugarConMascota = async (req, res) => {
   const usuario_id = req.user.id;
   const mascota_id = req.params.id;
   const { tipo_juego_id } = req.body;
+
+  // 🛡️ Validar que se haya enviado tipo_juego_id
+  if (typeof tipo_juego_id === 'undefined' || tipo_juego_id === null) {
+    return res.status(400).json({ error: 'El tipo de juego es obligatorio.' });
+  }
 
   try {
     // 1. Obtener mascota, partida y ubicación
@@ -217,6 +223,7 @@ const jugarConMascota = async (req, res) => {
     }
 
     const mascota = mascotas[0];
+    console.log('🐾 Mascota al alimentar:', mascota);
 
     // 2. Verificar si está en el Refugio
     if (mascota.ubicacion !== 'Refugio') {
@@ -267,13 +274,21 @@ const jugarConMascota = async (req, res) => {
 };
 
 
+
 // ENTRENAR LA MASCOTA 
 async function entrenarMascota(req, res) {
   const usuario_id = req.user.id;
   const mascota_id = req.params.id;
   const { tipo_entrenamiento_id } = req.body;
 
+  // ✅ Validar que se haya enviado tipo_entrenamiento_id
+  if (!tipo_entrenamiento_id) {
+    return res.status(400).json({ error: 'Se requiere tipo_entrenamiento_id en el cuerpo de la solicitud.' });
+  }
+
   try {
+    console.log('💬 Body recibido:', req.body);
+
     // 1. Obtener datos de la mascota, su partida y ubicación
     const [mascotas] = await db.execute(`
       SELECT 
@@ -291,6 +306,7 @@ async function entrenarMascota(req, res) {
     }
 
     const mascota = mascotas[0];
+    console.log("mascota lista para entrenar")
 
     // 2. Verificar que esté en el Refugio
     if (mascota.ubicacion !== 'Refugio') {
@@ -328,6 +344,7 @@ async function entrenarMascota(req, res) {
       INSERT INTO historial_entrenamiento (mascota_id, tipo_entrenamiento_id)
       VALUES (?, ?)`, [mascota_id, tipo_entrenamiento_id]);
 
+    // 8. Respuesta exitosa
     res.status(200).json({
       message: 'Mascota entrenada con éxito 🐶🏋️',
       nuevo_entrenamiento: nuevoEntrenamiento,
