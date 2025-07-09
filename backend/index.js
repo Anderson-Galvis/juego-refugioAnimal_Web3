@@ -8,6 +8,8 @@ const db = require('./database');
 const authRoutes = require('./routes/auth.routes');
 const mascotasRoutes = require('./routes/mascotas.routes');
 const partidaRoutes = require('./routes/partida.routes');
+const fichaRoutes = require('./routes/mascotas.routes'); // Si ya están ahí
+
 
 // 🧱 Middlewares
 app.use(cors());
@@ -18,6 +20,8 @@ app.use('/auth', authRoutes);
 app.use('/mascotas', mascotasRoutes);
 app.use('/partida', partidaRoutes);
 app.use('/enfermedades', require('./routes/enfermedades.routes'));
+app.use('/', fichaRoutes);
+
 
 
 // 🔍 Ruta de prueba

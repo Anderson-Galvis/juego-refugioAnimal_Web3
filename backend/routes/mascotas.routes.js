@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const verifyToken = require('../middlewares/verifyToken');
+const { obtenerFichaTecnica } = require('../controllers/fichaTecnica.controller');
 
 const {
   rescatarMascota,
@@ -38,5 +39,9 @@ router.post('/:id/limpiar', verifyToken, limpiarMascota);
 
 // ruta para atender y curar a la mascota 
 router.post('/:id/atender', verifyToken, atenderMascota);
+
+// Ficha tecnica de la mascota 
+router.get('/mascotas/:id/ficha', verifyToken, obtenerFichaTecnica);
+
 
 module.exports = router;

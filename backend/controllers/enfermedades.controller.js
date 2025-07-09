@@ -22,8 +22,8 @@ async function enfermarMascotas() {
 
         // 3. Registrar en historial
         await db.execute(`
-          INSERT INTO historial_enfermedades (mascota_id, enfermedad_id)
-          VALUES (?, ?)
+          INSERT INTO historial_enfermedades (mascota_id, enfermedad_id, fecha_inicio)
+          VALUES (?, ?, NOW())
         `, [mascota.id, enfermedad.id]);
 
         console.log(`🐾 Mascota ${mascota.id} enfermó de ${enfermedad.nombre}`);

@@ -1,6 +1,6 @@
 const db = require('../database');
 
-// 🎯 Función 1: Rescatar mascota
+//  Rescatar mascota
 const rescatarMascota = async (req, res) => {
   const usuario_id = req.user.id;
 
@@ -64,7 +64,7 @@ const rescatarMascota = async (req, res) => {
   }
 };
 
-// 🎯 Función 2: Obtener mis mascotas
+//  Función 2: Obtener mis mascotas
 const obtenerMisMascotas = async (req, res) => {
   const usuario_id = req.user.id;
 
@@ -138,7 +138,7 @@ const obtenerMascotaPorId = async (req, res) => {
   }
 };
 
-// 🎯 Función 4: Alimentar mascota
+//  Alimentar mascota
 const alimentarMascota = async (req, res) => {
   const usuario_id = req.user.id;
   const mascota_id = req.params.id;
@@ -192,6 +192,8 @@ const alimentarMascota = async (req, res) => {
   }
 };
 
+
+//JUGAR CON LA MASCOTA 
 const jugarConMascota = async (req, res) => {
   const usuario_id = req.user.id;
   const mascota_id = req.params.id;
@@ -264,6 +266,8 @@ const jugarConMascota = async (req, res) => {
   }
 };
 
+
+// ENTRENAR LA MASCOTA 
 async function entrenarMascota(req, res) {
   const usuario_id = req.user.id;
   const mascota_id = req.params.id;
@@ -339,6 +343,7 @@ async function entrenarMascota(req, res) {
 }
 
 
+// LIMPIAR LA MASCOTA 
 const limpiarMascota = async (req, res) => {
   const usuario_id = req.user.id;
   const mascota_id = req.params.id;
